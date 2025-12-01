@@ -64,11 +64,41 @@ In blue pill board LED is connected to the pin PC13. And external pushbutton is
 connected to PC14 pin. Call `gpio_init()` configure PC13 as digital output push-pull pin and 
 PC14 as pullup input pin. Both pins mode is configured by setting bits in GPIOC->CRH MCU register.
 Addittional step to pullup PC14 is set corresponding bit in GPIOC->ODR register.
+```C
+/*
+  GPIO initialization
+
+  Setup LED1 pin as push-pull output and Button pin as pull-up input
+*/
+static void gpio_init(void)
+{
+    // Set PC13: output mode, 2 MHz, push-pull
+    GPIOC->CRH &= ~(GPIO_CRH_MODE13 | GPIO_CRH_CNF13);
+    GPIOC->CRH |= GPIO_CRH_MODE13_1; // 2 MHz
+    // CNF13 = 00 → push-pull
+
+    // Set PC14: input with pull-up
+    GPIOC->CRH &= ~(GPIO_CRH_MODE14 | GPIO_CRH_CNF14);
+    GPIOC->CRH |= GPIO_CRH_CNF14_1; // CNF14 = 10 → input with PU/PD
+    GPIOC->ODR |= (1 << BUTTON_PIN); // Enable pull-up
+}
+```
 
 Last initialization step is LED off. To LED off PC13 should have high value.
 main.c have to functions `led_off` and `led_on` to drive inboard LED. Each of this 
 function set or clear corresponding bit in GPIOC->ODR register. ODR register controls
 pins output value. 
+```C
+static void led_off(void)
+{
+    GPIOC->ODR |= (1 << LED1_PIN);
+}
+
+static void led_on(void)
+{
+    GPIOC->ODR &= ~(1 << LED1_PIN);
+}
+```
 
 After initialization endless button pin value read cycle started by `while(1)`. 
 GPIOC->IDR register contains bits corresponding to port C pins values.
