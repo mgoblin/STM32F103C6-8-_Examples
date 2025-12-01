@@ -1,5 +1,6 @@
+#define STM32F103x6
+
 #include "stm32f1xx.h"
-#include <stm32f103x6.h>
 
 #define LED1_PIN (13)   // LED1 is connected to PC13 and has LOW level to turn on
 #define BUTTON_PIN (14) // Button is connected to PC14 and has LOW level when pressed

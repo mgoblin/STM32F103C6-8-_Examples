@@ -37,4 +37,44 @@ Source code structured and some folders:
 - device_headers - CMSIS headers
 - startup - STM32F103C6T8 system code
 - src - application code
-- ld - linker script
+- ld - linker script folder
+
+System code, linker script and headers copied from CMSIS distribution.
+
+All application code placed to main.c file.
+
+The firmware waits for the button to be pressed and as long as the button is pressed, the LED on the board blinks.
+
+It begins with defining the microcontroller model (`#define STM32F103x6`). This is necessary to select the correct definitions of the microcontroller's peripheral registers in `stm32f1xx.h`. An alternative way is to define the model using the -D switch at compile time (see -D$(MCU) in the Makefile).
+
+
+Lets see main method now in main.c file. 
+
+To use the processor pins, you must first connect a clock signal to them.
+Both LED and pushbutton pin are on port C. 
+Call `enable_portc_clock` to connect port C to MCU clock.
+```C
+static void enable_portc_clock() 
+{
+    RCC->APB2ENR |= RCC_APB2ENR_IOPCEN; // Enable clock for PORTC
+}
+``` 
+The second step is to configure the operating mode of the microcontroller pins.
+In blue pill board LED is connected to the pin PC13. And external pushbutton is 
+connected to PC14 pin. Call `gpio_init()` configure PC13 as digital output push-pull pin and 
+PC14 as pullup input pin. Both pins mode is configured by setting bits in GPIOC->CRH MCU register.
+Addittional step to pullup PC14 is set corresponding bit in GPIOC->ODR register.
+
+Last initialization step is LED off. To LED off PC13 should have high value.
+main.c have to functions `led_off` and `led_on` to drive inboard LED. Each of this 
+function set or clear corresponding bit in GPIOC->ODR register. ODR register controls
+pins output value. 
+
+After initialization endless button pin value read cycle started by `while(1)`. 
+GPIOC->IDR register contains bits corresponding to port C pins values.
+
+Last part of puzzle is `ms_delay` function.
+This function synchronously delays the execution of code by the number of milliseconds passed in its parameter.
+For the sake of code simplicity ms_delay implemented as nested cycle of variable decrement. 
+This is not good practice use described approach in application. Using a timer is a better approach.
+  
