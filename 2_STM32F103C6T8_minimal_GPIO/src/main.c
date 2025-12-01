@@ -81,7 +81,7 @@ int main(void)
         // approximate 1 second duration and ms_delay blocks button polling.
         if (!(GPIOC->IDR & BUTTON_VALUE_MASK))
         {
-            // LED1 blinks once per press
+            // LED1 blinks if button pressed
             led_off();
             ms_delay(BLINK_DELAY_MS);
             led_on();
