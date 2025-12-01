@@ -35,15 +35,13 @@ LFLAGS += -mcpu=$(MCU_SPEC)
 LFLAGS += -mthumb
 LFLAGS += -Wall
 LFLAGS += --specs=nano.specs
-LFLAGS += --specs=nosys.specs
 LFLAGS += -Os
 LFLAGS += -Wl,--gc-sections,--relax
 LFLAGS += -Wl,--start-group -lc -lgcc -lm -lstdc++ -Wl,--end-group
 LFLAGS += -T$(LSCRIPT)
  
-AS_SRC   =  ./src/startup_stm32f103x6.s
-C_SRC    =  ./src/system_stm32f1xx.c
-C_SRC    += ./src/syscalls.c
+AS_SRC   =  ./startup/startup_stm32f103x6.s
+C_SRC    =  ./startup/system_stm32f1xx.c
 C_SRC    += ./src/main.c
 
 INCLUDE  += -I./device_headers
