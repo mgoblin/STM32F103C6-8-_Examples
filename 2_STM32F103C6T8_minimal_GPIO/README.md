@@ -6,7 +6,7 @@ The example project initializes pin C14 as input with a built-in pull-up resisto
 
 While button pressed LED is blinking.
 
-![electrial_schema](images/electical_sch.png)
+![electrial_schema](electical_sch.png)
 
 # Uploading and Debugging
 
@@ -33,4 +33,8 @@ Firmware upload described in "Overiew" section.
 Cleaning a project from build artifacts is performed by the command `make clean`.
 
 # Explanation of example internals
-Source code placed
+Source code structured and some folders:
+- device_headers - CMSIS headers
+- startup - STM32F103C6T8 system code
+- src - application code
+- ld - linker script

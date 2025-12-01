@@ -3,6 +3,7 @@ TARGET = main
 # Define the linker script location and chip architecture.
 LD_SCRIPT = STM32F103X6_FLASH.ld
 MCU_SPEC  = cortex-m3
+MCU = STM32F103x6
 
 # Toolchain definitions (ARM bare metal defaults)
 CC = arm-none-eabi-gcc
@@ -53,13 +54,13 @@ OBJS += $(C_SRC:.c=.o)
 all: $(TARGET).bin
 
 %.o: %.s
-	$(CC) -x assembler-with-cpp $(ASFLAGS) -DSTM32F1 -DSTM32F103x6 $< -o $@
+	$(CC) -x assembler-with-cpp $(ASFLAGS) -D$(MCU) $< -o $@
 
 %.o: %.c
-	$(CC) -c $(CFLAGS) $(INCLUDE) -DSTM32F1 -DSTM32F103x6 $< -o $@
+	$(CC) -c $(CFLAGS) $(INCLUDE) -D$(MCU) $< -o $@
 
 $(TARGET).elf: $(OBJS)
-	$(CC) $^ $(LFLAGS) -DSTM32F103x6 -o $@
+	$(CC) $^ $(LFLAGS) -o $@
 
 $(TARGET).bin: $(TARGET).elf
 	$(OC) -S -O binary $< $@
