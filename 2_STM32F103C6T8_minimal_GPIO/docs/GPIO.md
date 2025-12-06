@@ -45,3 +45,17 @@ For MODEy[1:0]>00:
 11: Alternate function output Open-drain 
 
 # Read and write registers
+
+GPIOx_IDR - pins input value
+
+![GPIO_IDR](./images/gpio_idr.png)
+
+GPIOx_ODR - pins output value
+![GPIO_ODR](./images/gpio_odr.png)
+
+Set GPIOx_ODR bits is not atomic operation and assumes to operations: 
+read ODR and set ODR bits. This is a reason to use another 
+two registers GPIOx_BSRR and GPIOx_BRR.
+
+GPIOx_BSRR - atomic set or clear ODR bits
+![GPIO_BSRR](./images/gpio_bsrr.png)
