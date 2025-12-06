@@ -74,3 +74,29 @@ GPIOx_BRR - atomic clear ODR bits
 BRy clear ODR bit:
  - 0 does not affect the corresponding ODR bit
  - 1 clear the corresponding bit ODR
+
+ GPIOx_LCKR - lock gpio config
+
+ ![GPIO_LCKK](./images/gpio_lckk.png)
+
+ When writing to a register, the gpio configuration should not change.
+
+ LCKK[16] is a lock status bit. 
+ - 0 - lock is inactive
+ - 1 - lock is active. 
+ 
+ LCKy - pin configuration lock status. 
+ - 0 - pin config not locked
+ - 1 - pin config locked
+
+ LCKy should be changed only in LCKK[16] is equals to 0.
+
+ To activate lock bit sequence should be write to LCKK. 
+ After lock activation it doesnt not be unloked until reboot.
+
+ Lock sequence for LCKK[16] is
+ - write 1
+ - write 0
+ - write 1
+ - read 0
+ - read 1 (optional check lock status)
