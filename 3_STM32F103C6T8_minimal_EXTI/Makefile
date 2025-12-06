@@ -47,20 +47,19 @@ LFLAGS += -Wl,--gc-sections,--relax
 LFLAGS += -Wl,--start-group -lc -lgcc -lm -lstdc++ -Wl,--end-group
 LFLAGS += -T$(LSCRIPT)
 
-AS_SRC   =  ./boot_code/startup_stm32f103x6.s
-C_SRC    =  ./boot_code/syscalls.c
-C_SRC    += ./boot_code/system_stm32f1xx.c
-# C_SRC    += ./src/nvic.c
+AS_SRC   =  ./startup/startup_stm32f103x6.s
+C_SRC    =  ./startup/syscalls.c
+C_SRC    += ./startup/system_stm32f1xx.c
 C_SRC    += ./src/main.c
 
 INCLUDE  =  -I./
-INCLUDE  += -I./include
+INCLUDE  += -I./device_headers
 
 OBJS  = $(AS_SRC:.s=.o)
 OBJS += $(C_SRC:.c=.o)
 
 .PHONY: all
-all: flash
+all: $(TARGET).bin
 
 %.o: %.s
 	$(CC) -x assembler-with-cpp $(ASFLAGS) $< -o $@

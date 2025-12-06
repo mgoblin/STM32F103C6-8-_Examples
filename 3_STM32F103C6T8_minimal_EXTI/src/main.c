@@ -2,12 +2,17 @@
 * Interrupts handling demo.
 * 
 * Set LED connected to PC13 on/off 
-* when ecnoder button is pressed or encoder rotated.
+* when ecnoder button is pressed or encoder rotated LED is blink.
 *
 * Encoder pins state change on falling edge is linked 
 * to interrupt handler.
 */
+#ifndef STM32F103x6
+#define STM32F103x6
+#endif
+
 #include <stm32f1xx.h>
+#include <stdint.h>
 
 #define BUTTON_PORT   GPIOC
 #define BUTTON_PIN    14
@@ -47,7 +52,6 @@ static void gpio_init(void)
   );
   GPIOC->CRH |= GPIO_CRH_CNF14_1 | GPIO_CRH_CNF15_1; // CNF14/CNF15 = 10 → input with PU/PD
   GPIOC->ODR |= (1 << BUTTON_PIN); // Enable pull-up for PC14
-  GPIOC->ODR |= (1 << ENCODER_PIN); // Enable pull-up for PC14
 }
 
 /*
@@ -72,6 +76,11 @@ static void led_on(void)
 static void led_off(void)
 {
   GPIOC->ODR |= (1 << LED_PIN);
+}
+
+uint8_t read_led_state(void)
+{
+  return GPIOC->ODR & (1 << LED_PIN) ? 0xFF : 0x00;
 }
 
 /*
@@ -121,7 +130,10 @@ int main(void) {
   // Light the button only if it should be on.
   while (1) {
     // Arrange the LED state with target.
-    target_led_state ? led_on() : led_off();
+    if (target_led_state != read_led_state())
+    {
+      target_led_state ? led_on() : led_off();
+    }
     //__WFI(); Uncomment this line get stuck STM32F103 MCU. Known issue.
   }
 }
@@ -142,7 +154,7 @@ void EXTI15_10_IRQHandler(void)
     target_led_state = !target_led_state;
   }
 
-  // Check that EXTI 14 is the line that triggered.
+  // Check that EXTI 15 is the line that triggered.
   if(EXTI->PR & EXTI_PR_PR15) 
   {
     // If it was, clear the interrupt flag.
