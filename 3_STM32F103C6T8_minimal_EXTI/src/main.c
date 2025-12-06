@@ -2,7 +2,7 @@
 * Interrupts handling demo.
 * 
 * Set LED connected to PC13 on/off 
-* when ecnoder button is pressed or encoder rotated LED is blink.
+* when ecnoder button is pressed or encoder rotated LED is blink once.
 *
 * Encoder pins state change on falling edge is linked 
 * to interrupt handler.

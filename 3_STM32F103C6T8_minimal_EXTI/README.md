@@ -39,3 +39,30 @@ Source code structured and some folders:
 - src - application code
 - ld - linker script folder
 
+System code, linker script and headers copied from CMSIS distribution.
+
+All application code placed to main.c file.
+
+Firmware waits encoder button is pressed or encoder is rotated and LED blink once.
+
+It begins with defining the microcontroller model (`#define STM32F103x6`). This is necessary to select the correct definitions of the microcontroller's peripheral registers in `stm32f1xx.h`. An alternative way is to define the model using the -D switch at compile time (see -D$(MCU) in the Makefile).
+
+Lets see main method now in main.c file. 
+
+To use the processor pins, you must first connect a clock signal to them.
+Both LED and encoder pins are on port C. Extended Interrupt/Event Controller needs to connect a clock signal too.
+
+Call `void clock_init()` to connect port C and AFIO (register for EXTI bus) to MCU clock.
+
+```C
+static void clock_init(void)
+{
+    RCC->APB2ENR |= RCC_APB2ENR_IOPCEN; // Enable clock for PORT C
+    RCC->APB2ENR |= RCC_APB2ENR_AFIOEN; // Enable clock for AFIO
+}
+```
+
+The second step is to configure the operating mode of the microcontroller pins. Call `gpio_init()` configure pins. See STM32F103C6T8_minimal_GPIO example for gpio details.
+
+
+
