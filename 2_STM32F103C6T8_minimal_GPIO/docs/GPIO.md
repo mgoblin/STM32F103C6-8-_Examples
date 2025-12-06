@@ -59,3 +59,18 @@ two registers GPIOx_BSRR and GPIOx_BRR.
 
 GPIOx_BSRR - atomic set or clear ODR bits
 ![GPIO_BSRR](./images/gpio_bsrr.png)
+
+BRy clear ODR bit:
+- 0 does not affect the corresponding ODR bit 
+- 1 clear the corresponding bit ODR
+
+BSy set ODR bit:
+- 0 does not affect the corresponding ODR bit
+- 1 set the corresponding bit ODR
+
+GPIOx_BRR - atomic clear ODR bits
+![GPIO_BRR](./images/gpio_brr.png)
+
+BRy clear ODR bit:
+ - 0 does not affect the corresponding ODR bit
+ - 1 clear the corresponding bit ODR
