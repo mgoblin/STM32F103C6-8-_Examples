@@ -37,3 +37,5 @@ System code, linker script and headers copied from CMSIS distribution.
 
 All application code placed to main.c file.
 
+TODO Describe timer registers and interrupt handler
+
