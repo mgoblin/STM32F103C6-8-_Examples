@@ -1,6 +1,6 @@
 # Overview
 
-This is a minimal project which uses some device header files provided by ST to give us access to convenient aliases for peripheral registers.
+This is a minimal project which uses CMSIS device header provided by ST to give us access to convenient aliases for peripheral registers.
 
 The example project initializes pin C14 as input with a built-in pull-up resistor; it listens for button presses on a button connected to ground. pin C13 is set to push-pull output, and it is connected to a built-in LED on ST's "Blue pill" board. 
 
